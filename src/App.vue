@@ -1,53 +1,51 @@
 <script setup>
-import { reactive } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 const estado = reactive({
   resultado: 0,
 })
 
-let numero1 = 0
-let numero2 = 0
-let filter = "0"
-
-const adicionaNumero1 = (evento) => {
-  numero1 = parseInt(evento.target.value);
-}
-
-const valorSelect = (evento) => {
-  filter = evento.target.value;
-}
-
-const adicionaNumero2 = (evento) => {
-  numero2 = parseInt(evento.target.value);
-}
+const numero1 = ref(0)
+const numero2 = ref(0)
+const filter = ref("")
 
 const trocaFiltro = () => {
-  switch (filter) {
+  switch (filter.value) {
   case "adicao":
-    return somar(numero1, numero2);
+    somar(numero1.value, numero2.value);
+    break
   case "subtracao":
-    return diminuir(numero1, numero2);
+    diminuir(numero1.value, numero2.value);
+    break
   case "multiplicacao":
-    return multiplicar(numero1, numero2);
+    multiplicar(numero1.value, numero2.value);
+    break
   case "divisao":
-    return dividir(numero1, numero2);
+    dividir(numero1.value, numero2.value);
+    break
 }}
 
 const somar = (numero1, numero2) => {
-  return estado.resultado = numero1 + numero2;
+  estado.resultado = numero1 + numero2;
 }
 
 const diminuir = (numero1, numero2) => {
-  return estado.resultado = numero1 - numero2;
+  estado.resultado = numero1 - numero2;
 }
 
 const multiplicar = (numero1, numero2) => {
-  return estado.resultado = numero1 * numero2;
+  estado.resultado = numero1 * numero2;
 }
 
 const dividir = (numero1, numero2) => {
-  return estado.resultado = numero1 / numero2;
+  estado.resultado = numero1 / numero2;
 }
+
+watch([numero1, numero2, filter], () => {
+  if (filter.value) {
+    trocaFiltro();
+  }
+})
 </script>
 
 <template>
@@ -57,10 +55,10 @@ const dividir = (numero1, numero2) => {
     </header>
     <div class="row">
       <div class="col-3">
-        <input class="form-control" type="number" placeholder="Digite o primeiro número" @keyup="adicionaNumero1">
+        <input class="form-control" type="number" placeholder="Digite o primeiro número" v-model.number="numero1">
       </div>
       <div class="col-2">
-        <select @change="valorSelect" class="form-select">
+        <select v-model="filter" class="form-select">
           <option value="0"></option>
           <option value="adicao">Adição(+)</option>
           <option value="subtracao">Subtração(-)</option>
@@ -69,7 +67,7 @@ const dividir = (numero1, numero2) => {
         </select>
       </div>
       <div class="col-3">
-        <input class="form-control" type="number" placeholder="Digite o segundo número" @keyup="adicionaNumero2">
+        <input class="form-control" type="number" placeholder="Digite o segundo número" v-model.number="numero2">
       </div>
       <div class="col">
         <button @click="trocaFiltro" class="btn btn-dark">Calcular</button>
