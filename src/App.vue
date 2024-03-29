@@ -69,8 +69,10 @@ watch([numero1, numero2, filter], () => {
       <div class="col-3">
         <input class="form-control" type="number" placeholder="Digite o segundo número" v-model.number="numero2">
       </div>
-      <div class="col">
-        <button @click="trocaFiltro" class="btn btn-dark">Calcular</button>
+      <div class="col-1">
+        <p class="form-control">
+          Resultado:
+        </p>
       </div>
       <div class="col">
         <p class="form-control" placeholder="Resultado:">
